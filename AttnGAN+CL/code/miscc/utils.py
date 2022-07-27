@@ -32,7 +32,8 @@ def drawCaption(convas, captions, ixtoword, vis_size, off1=2, off2=2):
     img_txt = Image.fromarray(convas)
     # get a font
     # fnt = None  # ImageFont.truetype('Pillow/Tests/fonts/FreeMono.ttf', 50)
-    fnt = ImageFont.truetype('Pillow/Tests/fonts/FreeMono.ttf', 50)
+    #fnt = ImageFont.truetype('Pillow/Tests/fonts/FreeMono.ttf', 50)
+    fnt = ImageFont.truetype('FreeMono.ttf', 50)
     # get a drawing context
     d = ImageDraw.Draw(img_txt)
     sentence_list = []
@@ -226,11 +227,11 @@ def build_super_images2(real_imgs, captions, cap_lens, ixtoword,
             mask = one_map > thresh
             one_map = one_map * mask
             if (vis_size // att_sze) > 1:
-                one_map = \
-                    skimage.transform.pyramid_expand(one_map, sigma=20,
-                                                     upscale=vis_size // att_sze)
+                one_map = skimage.transform.pyramid_expand(one_map, sigma=20, upscale=vis_size // att_sze, multichannel=True)
             minV = one_map.min()
             maxV = one_map.max()
+            if maxV-minV == 0:
+                maxV = maxV + 0.00000001
             one_map = (one_map - minV) / (maxV - minV)
             row_beforeNorm.append(one_map)
         sorted_indices = np.argsort(conf_score)[::-1]

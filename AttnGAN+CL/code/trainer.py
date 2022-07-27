@@ -554,7 +554,7 @@ class condGANTrainer(object):
                         print("R mean:{:.4f} std:{:.4f}".format(R_mean, R_std))
                         cont = False
 
-    def gen_example(self, data_dic):
+    def gen_example(self, data_dic, im_num):
         if cfg.TRAIN.NET_G == '':
             print('Error: the path for morels is not found!')
         else:
@@ -621,7 +621,7 @@ class condGANTrainer(object):
                             im = np.transpose(im, (1, 2, 0))
                             # print('im', im.shape)
                             im = Image.fromarray(im)
-                            fullpath = '%s_g%d.png' % (save_name, k)
+                            fullpath = '%s_g%d_%d.png' % (save_name, k, im_num)
                             im.save(fullpath)
 
                         for k in range(len(attention_maps)):
@@ -638,5 +638,5 @@ class condGANTrainer(object):
                                                     [attn_maps[j]], att_sze)
                             if img_set is not None:
                                 im = Image.fromarray(img_set)
-                                fullpath = '%s_a%d.png' % (save_name, k)
+                                fullpath = '%s_a%d_%d.png' % (save_name, k, im_num)
                                 im.save(fullpath)
